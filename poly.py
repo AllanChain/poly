@@ -77,7 +77,7 @@ n is the num of size of the poly;
         points=[]
         for i in range(n):
             ang=i*step+sang
-            points.append((int(sx+sin(ang)*r),int(sy+cos(ang)*r)))
+            points.append((int(sx+sin(ang)*r),int(sy+cos(ang)*r)))#由下方或偏右逆时针编号
         self.rect,self.topleft,self.points=rect,topleft,points
         self.n,self.r,self.size=n,r,size
         #print(sx)
