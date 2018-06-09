@@ -48,6 +48,8 @@ class PolyGroup:
         return self.base_poly.copy_and_move((dx,dy))
     def is_valid_coord(self,coord):
         x,y=coord
+        if x<0 or y<0:
+            return False
         if x>=self.line:
             return False
         if x%2==1 and y>=self.ODD:
@@ -73,3 +75,13 @@ class PolyGroup:
         x,y=coord
         EVEN,ODD=self.EVEN_T,self.ODD_T
         return (x//2)*(EVEN+ODD)+(x%2)*EVEN+y
+    def get_neibors_by_coord(self,coord):
+        self.check_valid_coord(coord)
+        x,y=coord
+        neibors=[(x,y+1),(x,y-1),(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
+        neibors=list(filter(self.is_valid_coord,neibors))
+        return neibors
+    def get_neibors_by_num(self,num):
+        coord=self.num_to_coord(num)
+        return(list(map(self.coord_to_num,self.get_neibors_by_coord(coord))))
+
