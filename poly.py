@@ -53,6 +53,8 @@ n is the num of size of the poly;
               'The r or size must be an number'
         if size!=None and r==None:
             r=(size/2)/sin(pi/n)
+        else:
+            size=r*sin(pi/n)*2
         
             #topleft=(size/2)/sin(pi/n)
         if n % 2==0:#if it's an even one
