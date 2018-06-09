@@ -26,20 +26,18 @@ class PolyGroup:
         return
     def __getitem__(self,i):
         coord=self.num_to_coord(i)
-        if not self.is_valid_coord(coord):
-            raise IndexError('Index out of range')
+        self.check_valid_coord(coord)
         return self.get_poly_by_coord(coord)
 
     def get_delta_pos_by_coord(self,coord):
-        if self.is_valid_coord(coord):
-            x,y=coord
-            if self.n==6:
-                dx=x*(self.base_poly.points[0][0]-self.base_poly.points[4][0])
-                dy=self.base_poly.rect[1]*(y+(x%2)*(self.EVEN-self.ODD)/2)
-            elif self.n==8:
-                dx=x*(self.base_poly.points[0][0]-self.base_poly.points[5][0])
-                dy=(self.base_poly.rect[1]+self.base_poly.size)*(y+(x%2)*(self.EVEN-self.ODD)/2)
-
+        self.check_valid_coord(coord)
+        x,y=coord
+        if self.n==6:
+            dx=x*(self.base_poly.points[0][0]-self.base_poly.points[4][0])
+            dy=self.base_poly.rect[1]*(y+(x%2)*(self.EVEN-self.ODD)/2)
+        elif self.n==8:
+            dx=x*(self.base_poly.points[0][0]-self.base_poly.points[5][0])
+            dy=(self.base_poly.rect[1]+self.base_poly.size)*(y+(x%2)*(self.EVEN-self.ODD)/2)
         return dx,dy
     def get_pos_by_coord(self,coord):
         sx,sy=self.base_poly.topleft
@@ -57,9 +55,21 @@ class PolyGroup:
         if x%2==0 and y>=self.EVEN:
             return False
         return True
+    def check_valid_coord(self,coord):
+        if not self.is_valid_coord(coord):
+            raise IndexError('Index out of range')
+        else:
+            return
     def num_to_coord(self,num):
         EVEN,ODD=self.EVEN_T,self.ODD_T
         p,q=divmod(num,(EVEN+ODD))
         #r,s=divmod(q,self.EVEN)
         r=min(1,q//EVEN)#r可能为2
-        return p*2+r,q-r*EVEN
+        x,y=p*2+r,q-r*EVEN
+        self.check_valid_coord((x,y))
+        return x,y
+    def coord_to_num(self,coord):
+        self.check_valid_coord(coord)
+        x,y=coord
+        EVEN,ODD=self.EVEN_T,self.ODD_T
+        return (x//2)*(EVEN+ODD)+(x%2)*EVEN+y
