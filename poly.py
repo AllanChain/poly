@@ -68,7 +68,7 @@ n is the num of size of the poly;
             sy=r if lie else r*cos(pi/n)
         if center!=None:
             topleft=(center[0]-rect[0]/2,center[1]-rect[1]/2)
-            #print(rect)
+            #以center为准
         x,y=topleft
         sx+=x
         sy+=y
@@ -80,7 +80,13 @@ n is the num of size of the poly;
             points.append((int(sx+sin(ang)*r),int(sy+cos(ang)*r)))#由下方或偏右逆时针编号
         self.rect,self.topleft,self.points=rect,topleft,points
         self.n,self.r,self.size=n,r,size
+        self.center=(sx,sy)
         #print(sx)
+        return
+    def copy_and_move(self,d):
+        dx,dy=d
+        ox,oy=self.topleft
+        return poly(n=self.n,r=self.r,topleft=(ox+dx,oy+dy))
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
    
