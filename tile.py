@@ -78,8 +78,10 @@ class PolyGroup:
     def get_neibors_by_coord(self,coord):
         self.check_valid_coord(coord)
         x,y=coord
-        neibors=[(x,y+1),(x,y-1),(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
+        neibors=[(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
         neibors=list(filter(self.is_valid_coord,neibors))
+        if self.n==6:
+            neibors.extend([(x,y+1),(x,y-1)])
         return neibors
     def get_neibors_by_num(self,num):
         coord=self.num_to_coord(num)
