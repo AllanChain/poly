@@ -62,7 +62,10 @@ class PolyGroup:
         sx,sy=pos
         x=sx//self.dlx
         y=sy//self.dly
-        for p in self.get
+        for p in self.get_neibors_by_coord((x,y)):
+            t_poly=self.get_poly_by_coord(p)
+            if t_poly.collide(pos):
+                return p
     def check_valid_coord(self,coord):
         if not self.is_valid_coord(coord):
             raise IndexError('Index out of range')
@@ -84,7 +87,7 @@ class PolyGroup:
     def get_neibors_by_coord(self,coord):
         self.check_valid_coord(coord)
         x,y=coord
-        neibors=[(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
+        neibors=[(x+1,y),(x-1,y),(x+1,y+int((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+int((x%2)*2-1)*(self.EVEN-self.ODD))]
         neibors=list(filter(self.is_valid_coord,neibors))
         if self.n==6:
             neibors.extend([(x,y+1),(x,y-1)])
