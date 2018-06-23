@@ -22,7 +22,12 @@ class PolyGroup:
                 self.EVEN+=1
         else:
             raise PolyError('Cannot create such a poly group')
-
+        if self.n==6:
+            self.dlx=base_poly.points[0][0]-base_poly.points[4][0]
+            self.dly=base_poly.rect[1]
+        elif self.n==8:
+            self.dlx=base_poly.points[0][0]-base_poly.points[5][0]
+            self.dly=base_poly.rect[1]+base_poly.size
         return
     def __getitem__(self,i):
         coord=self.num_to_coord(i)
@@ -32,12 +37,8 @@ class PolyGroup:
     def get_delta_pos_by_coord(self,coord):
         self.check_valid_coord(coord)
         x,y=coord
-        if self.n==6:
-            dx=x*(self.base_poly.points[0][0]-self.base_poly.points[4][0])
-            dy=self.base_poly.rect[1]*(y+(x%2)*(self.EVEN-self.ODD)/2)
-        elif self.n==8:
-            dx=x*(self.base_poly.points[0][0]-self.base_poly.points[5][0])
-            dy=(self.base_poly.rect[1]+self.base_poly.size)*(y+(x%2)*(self.EVEN-self.ODD)/2)
+        dx=x*self.dlx
+        dy=self.dly*(y+(x%2)*(self.EVEN-self.ODD)/2)
         return dx,dy
     def get_pos_by_coord(self,coord):
         sx,sy=self.base_poly.topleft
@@ -57,6 +58,11 @@ class PolyGroup:
         if x%2==0 and y>=self.EVEN:
             return False
         return True
+    def collide(self,pos):
+        sx,sy=pos
+        x=sx//self.dlx
+        y=sy//self.dly
+        for p in self.get
     def check_valid_coord(self,coord):
         if not self.is_valid_coord(coord):
             raise IndexError('Index out of range')
