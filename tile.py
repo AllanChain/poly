@@ -65,12 +65,10 @@ class PolyGroup:
         sy-=cy
         x=int(sx//self.dlx)
         y=int(sy//self.dly)
-        ns=self.get_neibors_by_coord((x,y))
-        if self.is_valid_coord((x,y)):
-            ns.insert(0,(x,y))
+        ns=self.get_neiborhood_by_coord((x,y))
         for p in ns:
             t_poly=self.get_poly_by_coord(p)
-            #print(p)
+            print('---',p)
             if t_poly.collide(pos):
                 return p
     def check_valid_coord(self,coord):
@@ -94,12 +92,20 @@ class PolyGroup:
     def get_neibors_by_coord(self,coord):
         #self.check_valid_coord(coord)
         x,y=coord
-        neibors=[(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
+        neibors=[(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),\
+                 (x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
         if self.n==6:
             neibors.extend([(x,y+1),(x,y-1)])
         neibors=list(filter(self.is_valid_coord,neibors))
         
         return neibors
+    def get_neiborhood_by_coord(self,coord):
+        x,y=coord
+        neiborhood=[(x,y),(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),\
+                    (x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x,y+1),(x,y-1)]
+        neiborhood=list(filter(self.is_valid_coord,neiborhood))
+        return neiborhood
+
     def get_neibors_by_num(self,num):
         coord=self.num_to_coord(num)
         return(list(map(self.coord_to_num,self.get_neibors_by_coord(coord))))
