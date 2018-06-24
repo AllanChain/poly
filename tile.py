@@ -60,10 +60,17 @@ class PolyGroup:
         return True
     def collide(self,pos):
         sx,sy=pos
-        x=sx//self.dlx
-        y=sy//self.dly
-        for p in self.get_neibors_by_coord((x,y)):
+        cx,cy=self.base_poly.topleft
+        sx-=cx
+        sy-=cy
+        x=int(sx//self.dlx)
+        y=int(sy//self.dly)
+        ns=self.get_neibors_by_coord((x,y))
+        if self.is_valid_coord((x,y)):
+            ns.insert(0,(x,y))
+        for p in ns:
             t_poly=self.get_poly_by_coord(p)
+            #print(p)
             if t_poly.collide(pos):
                 return p
     def check_valid_coord(self,coord):
@@ -85,12 +92,13 @@ class PolyGroup:
         EVEN,ODD=self.EVEN_T,self.ODD_T
         return (x//2)*(EVEN+ODD)+(x%2)*EVEN+y
     def get_neibors_by_coord(self,coord):
-        self.check_valid_coord(coord)
+        #self.check_valid_coord(coord)
         x,y=coord
-        neibors=[(x+1,y),(x-1,y),(x+1,y+int((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+int((x%2)*2-1)*(self.EVEN-self.ODD))]
-        neibors=list(filter(self.is_valid_coord,neibors))
+        neibors=[(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD))]
         if self.n==6:
             neibors.extend([(x,y+1),(x,y-1)])
+        neibors=list(filter(self.is_valid_coord,neibors))
+        
         return neibors
     def get_neibors_by_num(self,num):
         coord=self.num_to_coord(num)
