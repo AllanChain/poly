@@ -22,19 +22,16 @@ class PolyGroup:
                 self.EVEN+=1
         else:
             raise PolyError('Cannot create such a poly group')
+        f=(self.EVEN-self.ODD-2*self.EVEN_T+2*self.ODD_T)
         if self.n==6:
             self.dlx=base_poly.points[0][0]-base_poly.points[4][0]
             self.dly=base_poly.rect[1]
-            
+            down=max(0,f)*self.dly/2+self.dly
         elif self.n==8:
             self.dlx=base_poly.points[0][0]-base_poly.points[5][0]
             self.dly=base_poly.rect[1]+base_poly.size
-        up=min(0,(self.EVEN-self.ODD)/2)*self.dly
-        f=(self.EVEN-self.ODD-2*self.EVEN_T+2*self.ODD_T)
-        if self.n==6:
-            down=max(0,f)*self.dly/2+self.dly
-        elif self.n==8:
             down=max(base_poly.rect[1],f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
+        up=min(0,(self.EVEN-self.ODD)/2)*self.dly
         print(down)
         self.rect=(self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
                    self.dlx*line+base_poly.points[1][0]-base_poly.points[0][0],\
