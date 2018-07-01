@@ -36,6 +36,8 @@ class PolyGroup:
         self.rect=(self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
                    self.dlx*line+base_poly.points[1][0]-base_poly.points[0][0],\
                    self.dly*(self.EVEN_T-1)+down-up)
+        r,s=divmod(line,2)
+        self.total=r*(self.EVEN_T+self.ODD_T)+s*self.EVEN_T
         return
     def __getitem__(self,i):
         coord=self.num_to_coord(i)
@@ -117,4 +119,20 @@ class PolyGroup:
     def get_neibors_by_num(self,num):
         coord=self.num_to_coord(num)
         return(list(map(self.coord_to_num,self.get_neibors_by_coord(coord))))
+class ComboGroup:
+    def __init__(self,groups)
+        self.groups=groups
+        self.total=0
+        for g in groups:
+            self.total+=g.total
+    def __getitem__(self,*args):
+        if len(args)==1:
+            g,n=self.get_group(args[0])
+            return g[n]
 
+    def get_group(self,n):
+        if 0<=n<self.total:
+            for g in self.groups:
+                if n<g.total:
+                    return g,n
+                n-=g.total
