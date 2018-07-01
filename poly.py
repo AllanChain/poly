@@ -9,11 +9,20 @@ def getline(p1,p2):
     if k>100:return(None,None)
     b=y1-k*x1
     return(k,b)
+def rect_collide(rect,p):
+    x0,y0,w,h=rect
+    x,y=p
+    if x0<=x<=x0+w and y0<=y<=y0+h:
+        return True
+    return False
 class commonPoly:
     def __init__(self,points):
         self.points=points
         self.n=len(points)
     def collide(self,p):
+        if hasattr(self,'rect'):
+            if not rect_collide((*self.topleft,*self.rect),p):
+                return False
         x,y=p
         linein=[]
         if not (self.topleft[0]<=x<=self.topleft[0]+self.rect[0] and \

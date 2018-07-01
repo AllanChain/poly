@@ -1,5 +1,5 @@
 # handling tiling hexagons and octagons
-from . import poly
+from . import poly,rect_collide
 class PolyError(Exception):
     pass
 class PolyGroup:
@@ -69,6 +69,8 @@ class PolyGroup:
             return False
         return True
     def collide(self,pos):
+        if not rect_collide(self.rect,pos):
+            return False
         sx,sy=pos
         cx,cy=self.base_poly.topleft
         sx-=cx
@@ -120,7 +122,7 @@ class PolyGroup:
         coord=self.num_to_coord(num)
         return(list(map(self.coord_to_num,self.get_neibors_by_coord(coord))))
 class ComboGroup:
-    def __init__(self,groups)
+    def __init__(self,groups):
         self.groups=groups
         self.total=0
         for g in groups:
@@ -129,6 +131,8 @@ class ComboGroup:
         if len(args)==1:
             g,n=self.get_group(args[0])
             return g[n]
+        elif len(args)==3:
+            return self.groups[args[0]].get_poly_by_coord(arg[1:])
 
     def get_group(self,n):
         if 0<=n<self.total:
@@ -136,3 +140,15 @@ class ComboGroup:
                 if n<g.total:
                     return g,n
                 n-=g.total
+        return(None,None)
+    def collide(self,p):
+        for g in self.groups:
+            po=g.collide(p)
+            if po:
+                return po
+        return None
+    def get_pos_by_num(self,num):
+        g,n=self.get_group(num)
+        coord=g.num_to_coord(n)
+        return g.get_pos_by_coord(coord)
+
