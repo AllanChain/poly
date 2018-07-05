@@ -152,4 +152,20 @@ class ComboGroup:
         g,n=self.get_group(num)
         coord=g.num_to_coord(n)
         return g.get_pos_by_coord(coord)
+    def set_special_neibors(self,sdict,mutual=True):
+        self.specials={}
+        for k,v in sdict:
+            self.specials[k]=set(v)
+            if mutual==True:
+                for j in v:
+                    if j in self.specials:
+                        self.specials.add(k)
+                    else:
+                        self.specials=set((k,))
+    def get_neibors_by_num(self,num):
+        neibors=()
+        neibors+=tuple(self.specials.get(num,()))
+        g,n=self.get_group(num)
+        neibors+=g.get_neibors_by_num(num)
+        return neibors
 
