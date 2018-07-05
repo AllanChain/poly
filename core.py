@@ -20,8 +20,19 @@ class Rect:
     @property
     def xywh(self):
         return self.x0,self.y0,self.w,self.h
+    @property
     def wh(self):
         return self.w,self.h
+    @property
+    def iwh(self):
+        return int(self.w),int(self.h)
+    @property
+    def center(self):
+        return self.x0+self.w/2,self.y0+self.h/2
+    @property
+    def icenter(self):
+        return int(self.x0+self.w/2),(self.y0+self.h/2)
+
 class commonPoly:
     def __init__(self,points):
         self.points=points

@@ -52,7 +52,7 @@ class PolyGroup:
         return dx,dy
     def get_pos_by_coord(self,coord):
         sx,sy=self.base_poly.topleft
-        dx,dy=get_delta_pos_by_coord(coord)
+        dx,dy=self.get_delta_pos_by_coord(coord)
         return sx+dx,sy+dy
     def get_poly_by_coord(self,coord):
         dx,dy=self.get_delta_pos_by_coord(coord)
@@ -131,6 +131,8 @@ class ComboGroup:
     def __getitem__(self,*args):
         if len(args)==1:
             g,n=self.get_group(args[0])
+            if g==None:
+                raise IndexError('Index out of range')
             return g[n]
         elif len(args)==3:
             return self.groups[args[0]].get_poly_by_coord(arg[1:])
@@ -148,20 +150,27 @@ class ComboGroup:
             if po:
                 return (i,)+po
         return None
+    def coord_to_num(self,coord):
+        n=0
+        for i in range(coord[0]):
+            n+=self.groups[i].total
+        n+=self.groups[coord[0]].coord_to_num(coord[1:])
+        return n
     def get_pos_by_num(self,num):
         g,n=self.get_group(num)
         coord=g.num_to_coord(n)
         return g.get_pos_by_coord(coord)
     def set_special_neibors(self,sdict,mutual=True):
         self.specials={}
-        for k,v in sdict:
+        for k,v in sdict.items():
+            print(self.specials,k,v)
             self.specials[k]=set(v)
             if mutual==True:
                 for j in v:
                     if j in self.specials:
-                        self.specials.add(k)
+                        self.specials[j].add(k)
                     else:
-                        self.specials=set((k,))
+                        self.specials[j]=set((k,))
     def get_neibors_by_num(self,num):
         neibors=()
         neibors+=tuple(self.specials.get(num,()))
