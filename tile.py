@@ -32,7 +32,7 @@ class PolyGroup:
             self.dly=base_poly.rect[1]+base_poly.size
             down=max(base_poly.rect[1],f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
         up=min(0,(self.EVEN-self.ODD)/2)*self.dly
-        print(down)
+        #print(down)
         self.rect=(self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
                    self.dlx*line+base_poly.points[1][0]-base_poly.points[0][0],\
                    self.dly*(self.EVEN_T-1)+down-up)
@@ -113,8 +113,9 @@ class PolyGroup:
         return neibors
     def get_neiborhood_by_coord(self,coord):
         x,y=coord
-        neiborhood=[(x,y),(x+1,y),(x-1,y),(x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),\
-                    (x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),(x,y+1),(x,y-1)]
+        neiborhood=[(x,y),(x+1,y),(x-1,y),(x,y+1),(x,y-1),\
+                (x+1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),\
+                (x-1,y+((x%2)*2-1)*(self.EVEN-self.ODD)),]
         neiborhood=list(filter(self.is_valid_coord,neiborhood))
         return neiborhood
 
@@ -142,10 +143,10 @@ class ComboGroup:
                 n-=g.total
         return(None,None)
     def collide(self,p):
-        for g in self.groups:
-            po=g.collide(p)
+        for i in range(len(self.groups)):
+            po=self.groups[i].collide(p)
             if po:
-                return po
+                return (i,)+po
         return None
     def get_pos_by_num(self,num):
         g,n=self.get_group(num)
