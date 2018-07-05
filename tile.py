@@ -1,5 +1,5 @@
 # handling tiling hexagons and octagons
-from . import poly,rect_collide
+from . import poly,Rect
 class PolyError(Exception):
     pass
 class PolyGroup:
@@ -25,17 +25,17 @@ class PolyGroup:
         f=(self.EVEN-self.ODD-2*self.EVEN_T+2*self.ODD_T)
         if self.n==6:
             self.dlx=base_poly.points[0][0]-base_poly.points[4][0]
-            self.dly=base_poly.rect[1]
+            self.dly=base_poly.rect.h
             down=max(0,f)*self.dly/2+self.dly
         elif self.n==8:
             self.dlx=base_poly.points[0][0]-base_poly.points[5][0]
-            self.dly=base_poly.rect[1]+base_poly.size
-            down=max(base_poly.rect[1],f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
+            self.dly=base_poly.rect.h+base_poly.size
+            down=max(base_poly.rect.h,f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
         up=min(0,(self.EVEN-self.ODD)/2)*self.dly
         #print(down)
-        self.rect=(self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
+        self.rect=Rect((self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
                    self.dlx*line+base_poly.points[1][0]-base_poly.points[0][0],\
-                   self.dly*(self.EVEN_T-1)+down-up)
+                   self.dly*(self.EVEN_T-1)+down-up))
         r,s=divmod(line,2)
         self.total=r*(self.EVEN_T+self.ODD_T)+s*self.EVEN_T
         return
@@ -69,7 +69,7 @@ class PolyGroup:
             return False
         return True
     def collide(self,pos):
-        if not rect_collide(self.rect,pos):
+        if not self.rect.collide(pos):
             return False
         sx,sy=pos
         cx,cy=self.base_poly.topleft

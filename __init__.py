@@ -1,2 +1,2 @@
-from .core  import commonPoly,poly,rect_collide
+from .core  import commonPoly,poly,Rect
 from .tile import PolyGroup
