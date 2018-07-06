@@ -80,7 +80,7 @@ class PolyGroup:
         ns=self.get_neiborhood_by_coord((x,y))
         for p in ns:
             t_poly=self.get_poly_by_coord(p)
-            print('---',p)
+            #print('---',p)
             if t_poly.collide(pos):
                 return p
     def check_valid_coord(self,coord):
@@ -125,9 +125,10 @@ class PolyGroup:
 class ComboGroup:
     def __init__(self,groups):
         self.groups=groups
-        self.total=0
-        for g in groups:
-            self.total+=g.total
+        self.totals=[g.total for g in groups]
+        self.total=sum(self.totals)
+        self.group_number=len(groups)
+
     def __getitem__(self,*args):
         if len(args)==1:
             g,n=self.get_group(args[0])
@@ -153,9 +154,16 @@ class ComboGroup:
     def coord_to_num(self,coord):
         n=0
         for i in range(coord[0]):
-            n+=self.groups[i].total
+            n+=self.totals[i]
         n+=self.groups[coord[0]].coord_to_num(coord[1:])
         return n
+    def num_to_coord(self,num):
+        if 0<=num<self.total:
+            for i in range(self.group_number):
+                if num<self.totals[i]:
+                    return (i,)+self.groups[i].num_to_coord(num)
+                num-=self.totals[i]
+        return(None,None)
     def get_pos_by_num(self,num):
         g,n=self.get_group(num)
         coord=g.num_to_coord(n)
@@ -172,9 +180,13 @@ class ComboGroup:
                     else:
                         self.specials[j]=set((k,))
     def get_neibors_by_num(self,num):
-        neibors=()
-        neibors+=tuple(self.specials.get(num,()))
+        neibors=[]
+        total=sum(self.totals[:self.num_to_coord(num)[0]])
+        neibors+=list(self.specials.get(num,[]))
         g,n=self.get_group(num)
-        neibors+=g.get_neibors_by_num(num)
+        neibors+=map(lambda x:x+total,g.get_neibors_by_num(n))
         return neibors
-
+    # def get_neibors_by_coord(self,coord):
+    #     neibors=[]
+    #     neibors+=self.groups[coord[0]].get_neibors_by_coord(coord[1:])
+    #
