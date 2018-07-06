@@ -21,6 +21,9 @@ class Rect:
     def xywh(self):
         return self.x0,self.y0,self.w,self.h
     @property
+    def topleft(self):
+        return self.x0,self.y0
+    @property
     def wh(self):
         return self.w,self.h
     @property
