@@ -83,7 +83,7 @@ n is the num of size of the poly;
                 rect=(r*2,r*2*cos(pi/n)) if lie else (r*2*cos(pi/n),r*2)
                     #the rect that holds the poly
             else:
-                rect=(r*2*cos(pi/n),r*2*cos(pi/n))
+                rect=(r*2*cos(pi/n),r*2*cos(pi/n)) if lie else (r*2,r*2)
             sx,sy=rect[0]/2,rect[1]/2
         else:#an odd one
             rect=(r*sin((n//2)*pi/n)*2,r*cos(pi/n)+r)
