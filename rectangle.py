@@ -20,12 +20,11 @@ class Rect:
             attr=attr[1:]
         if 'xy' in attr:
             response.extend([self.x0,self.y0])
-        elif 'wh' in attr:
+        if 'wh' in attr:
             response.extend([self.w,self.h])
-        else:
-            if attr in DELTA:
-                response=(self.x0+self.w*DELTA[attr][0],\
-                          self.y0+self.h*DELTA[attr][1])
+        if attr in DELTA:
+            response=(self.x0+self.w*DELTA[attr][0],\
+                      self.y0+self.h*DELTA[attr][1])
         if to_int==True:
             response=list(map(int,response))
         return tuple(response)
