@@ -1,4 +1,5 @@
 from math import sin,cos,pi
+from . import rectangle
 
 def getline(p1,p2):
     x1,y1=p1
@@ -9,32 +10,7 @@ def getline(p1,p2):
     if k>100:return(None,None)
     b=y1-k*x1
     return(k,b)
-class Rect:
-    def __init__(self,rect):
-        self.x0,self.y0,self.w,self.h=rect
-    def collide(self,p):
-        x,y=p
-        if self.x0<=x<=self.x0+self.w and self.y0<=y<=self.y0+self.h:
-            return True
-        return False
-    @property
-    def xywh(self):
-        return self.x0,self.y0,self.w,self.h
-    @property
-    def topleft(self):
-        return self.x0,self.y0
-    @property
-    def wh(self):
-        return self.w,self.h
-    @property
-    def iwh(self):
-        return int(self.w),int(self.h)
-    @property
-    def center(self):
-        return self.x0+self.w/2,self.y0+self.h/2
-    @property
-    def icenter(self):
-        return int(self.x0+self.w/2),int(self.y0+self.h/2)
+
 
 class commonPoly:
     def __init__(self,points):
@@ -102,7 +78,7 @@ n is the num of size of the poly;
             ang=i*step+sang
             points.append((int(sx+sin(ang)*r),int(sy+cos(ang)*r)))#由下方或偏右逆时针编号
         self.topleft,self.points=topleft,points
-        self.rect=Rect(topleft+rect)
+        self.rect=rectangle.Rect(topleft+rect)
         self.n,self.r,self.size=n,r,size
         self.center=(sx,sy)
         #print(sx)
@@ -137,6 +113,7 @@ def main():
                 #print(event.key)
                 if event.key== 13:
                     t=poly(n=randint(3,15),r=150)
+                    print(t.rect.itopleft)
                     DIS.fill((0,0,0))
                     pygame.draw.polygon(DIS,(255,0,0),t.points,5)
                     pygame.display.update()
