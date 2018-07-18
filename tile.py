@@ -182,7 +182,8 @@ class ComboGroup:
     def get_neibors_by_num(self,num):
         neibors=[]
         total=sum(self.totals[:self.num_to_coord(num)[0]])
-        neibors+=list(self.specials.get(num,[]))
+        if hasattr(self,'specials'):
+            neibors+=list(self.specials.get(num,[]))
         g,n=self.get_group(num)
         neibors+=map(lambda x:x+total,g.get_neibors_by_num(n))
         return neibors
