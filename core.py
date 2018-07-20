@@ -1,4 +1,5 @@
 from math import sin,cos,pi
+from . import rectangle
 
 def getline(p1,p2):
     x1,y1=p1
@@ -9,25 +10,21 @@ def getline(p1,p2):
     if k>100:return(None,None)
     b=y1-k*x1
     return(k,b)
+
+
 class commonPoly:
     def __init__(self,points):
         self.points=points
         self.n=len(points)
     def collide(self,p):
+        if hasattr(self,'rect'):
+            if not self.rect.collide(p):
+                return False
         x,y=p
         linein=[]
-        if not (self.topleft[0]<=x<=self.topleft[0]+self.rect[0] and \
-               self.topleft[1]<=y<=self.topleft[1]+self.rect[1]):#in the rect
-           return False
         flag=1 if self.points[-1][0]<=x else -1
         for i in range(-1,self.n-1):
            x0=self.points[i+1][0]
-           '''if x0<x:
-              flag2=1
-           elif x0==x:
-              flag2=flag
-           else:
-              flag2=-1'''
            flag2=1 if x0<x else -1
            if flag!=flag2:
               flag=flag2
@@ -62,7 +59,7 @@ n is the num of size of the poly;
                 rect=(r*2,r*2*cos(pi/n)) if lie else (r*2*cos(pi/n),r*2)
                     #the rect that holds the poly
             else:
-                rect=(r*2*cos(pi/n),r*2*cos(pi/n))
+                rect=(r*2*cos(pi/n),r*2*cos(pi/n)) if lie else (r*2,r*2)
             sx,sy=rect[0]/2,rect[1]/2
         else:#an odd one
             rect=(r*sin((n//2)*pi/n)*2,r*cos(pi/n)+r)
@@ -80,7 +77,8 @@ n is the num of size of the poly;
         for i in range(n):
             ang=i*step+sang
             points.append((int(sx+sin(ang)*r),int(sy+cos(ang)*r)))#由下方或偏右逆时针编号
-        self.rect,self.topleft,self.points=rect,topleft,points
+        self.topleft,self.points=topleft,points
+        self.rect=rectangle.Rect(topleft+rect)
         self.n,self.r,self.size=n,r,size
         self.center=(sx,sy)
         #print(sx)
@@ -115,6 +113,7 @@ def main():
                 #print(event.key)
                 if event.key== 13:
                     t=poly(n=randint(3,15),r=150)
+                    print(t.rect.itopleft)
                     DIS.fill((0,0,0))
                     pygame.draw.polygon(DIS,(255,0,0),t.points,5)
                     pygame.display.update()
