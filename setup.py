@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="polygons",
+    name="poly",
     version="0.0.1",
     author="Allan Chain",
     author_email="txsmlf@gmail.com",
