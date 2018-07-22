@@ -18,10 +18,13 @@ class Rect:
         if attr.startswith('i'):
             to_int=True
             attr=attr[1:]
-        if 'xy' in attr:
-            response.extend([self.x0,self.y0])
-        if 'wh' in attr:
-            response.extend([self.w,self.h])
+        if attr=='xyxy':
+            response=(self.x0,self.y0,self.x0+self.w/2,self.y0+self.h/2)
+        else:
+            if 'xy' in attr:
+                response.extend([self.x0,self.y0])
+            if 'wh' in attr:
+                response.extend([self.w,self.h])
         if attr in DELTA:
             response=(self.x0+self.w*DELTA[attr][0],\
                       self.y0+self.h*DELTA[attr][1])
