@@ -24,4 +24,4 @@ for a in ps:
 #x0,y0,dx,dy=ps.rect
 #draw.rectangle([x0,y0,x0+dx,y0+dy])
 draw.rectangle(ps.rect.ixyxy)
-im.save('123.png', "PNG")
+im.save('test_img.png', "PNG")
