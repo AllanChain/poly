@@ -19,7 +19,7 @@ class Rect:
             to_int=True
             attr=attr[1:]
         if attr=='xyxy':
-            response=(self.x0,self.y0,self.x0+self.w/2,self.y0+self.h/2)
+            response=(self.x0,self.y0,self.x0+self.w,self.y0+self.h)
         else:
             if 'xy' in attr:
                 response.extend([self.x0,self.y0])
