@@ -14,6 +14,7 @@ font=ImageFont.load_default()
 draw = ImageDraw.Draw(im)
 j=0
 for a in ps:
+    print(a.points)
     draw.polygon(a.points,outline=(0,255,0),fill=(0,0,255))
     k=ps.coord_to_num(ps.num_to_coord(j))
     draw.text(a.center,str(j),font=font)

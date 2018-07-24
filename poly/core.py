@@ -31,17 +31,23 @@ class commonPoly:
               k,b=getline(self.points[i+1],self.points[i])
               if k!=None:
                   linein.append(k*x+b)
-    
         linein.sort()
-        #print(linein)
         bools=list(map(lambda y0:y>=y0,linein))
         num=bools.count(True)
         ans=True if num%2==1 else False
         return ans
     def copy_and_move(self,d):
         dx,dy=d
-        ox,oy=self.topleft
-        return poly(n=self.n,r=self.r,topleft=(ox+dx,oy+dy))
+        #ox,oy=self.topleft
+        points=self.points.copy()
+        add=lambda p:(p[0]+dx,p[1]+dy)
+        polyobj=commonPoly(list(map(add,points)))
+        polyobj.topleft=(self.topleft[0]+dx,self.topleft[1]+dy)
+        polyobj.rect=rectangle.Rect(polyobj.topleft+self.rect.wh)
+        polyobj.n,polyobj.r,polyobj.size=self.n,self.r,self.size
+        polyobj.center=(self.center[0]+dx,self.center[1]+dy)
+        return polyobj
+        #return poly(n=self.n,r=self.r,topleft=(ox+dx,oy+dy))
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
 
