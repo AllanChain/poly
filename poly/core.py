@@ -49,7 +49,7 @@ class commonPoly:
     def move(self,d):
         dx,dy=d
         add=lambda p:(p[0]+dx,p[1]+dy)
-        self.points=list(map(add,self.points)))
+        self.points=list(map(add,self.points))
     def copy_and_move(self,d):
         polyobj=deepcopy(self)
         polyobj.move(d)
