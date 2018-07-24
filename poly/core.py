@@ -67,7 +67,7 @@ n is the num of size of the poly;
             sy=r if lie else r*cos(pi/n)
         if center!=None:
             topleft=(center[0]-rect[0]/2,center[1]-rect[1]/2)
-            #以center为准
+            #以center为准，可能和圆心不重合！！
         x,y=topleft
         sx+=x
         sy+=y
