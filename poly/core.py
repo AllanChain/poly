@@ -1,13 +1,13 @@
 from math import sin,cos,pi
 from . import rectangle
+from copy import deepcopy
 
 def getline(p1,p2):
     x1,y1=p1
     x2,y2=p2
-    if  x1==x2:
+    if abs(y1-y2)>100*abs(x1-x2):
         return(None,None)
     k=(y1-y2)/(x1-x2)
-    if k>100:return(None,None)
     b=y1-k*x1
     return(k,b)
 
@@ -46,18 +46,14 @@ class commonPoly:
         num=bools.count(True)
         ans=True if num%2==1 else False
         return ans
-    def copy_and_move(self,d):
+    def move(self,d):
         dx,dy=d
-        #ox,oy=self.topleft
-        points=self.points.copy()
         add=lambda p:(p[0]+dx,p[1]+dy)
-        polyobj=commonPoly(list(map(add,points)))
-        #polyobj.topleft=(self.topleft[0]+dx,self.topleft[1]+dy)
-        #polyobj.rect=rectangle.Rect(polyobj.topleft+self.rect.wh)
-        polyobj.n,polyobj.r,polyobj.size=self.n,self.r,self.size
-        polyobj.center=(self.center[0]+dx,self.center[1]+dy)
+        self.points=list(map(add,self.points)))
+    def copy_and_move(self,d):
+        polyobj=deepcopy(self)
+        polyobj.move(d)
         return polyobj
-        #return poly(n=self.n,r=self.r,topleft=(ox+dx,oy+dy))
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
 
@@ -71,36 +67,24 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True):
         r=(size/2)/sin(pi/n)
     else:
         size=r*sin(pi/n)*2
-        #topleft=(size/2)/sin(pi/n)
-    if n % 2==0:#if it's an even one
-        if n%4==2:
-            rect=(r*2,r*2*cos(pi/n)) if lie else (r*2*cos(pi/n),r*2)
-                #the rect that holds the poly
-        else:
-            rect=(r*2*cos(pi/n),r*2*cos(pi/n)) if lie else (r*2,r*2)
-        sx,sy=rect[0]/2,rect[1]/2
-    else:#an odd one
-        rect=(r*sin((n//2)*pi/n)*2,r*cos(pi/n)+r)
-        sx=r*sin((n//2)*pi/n)
-        sy=r if lie else r*cos(pi/n)
-    if center!=None:
-        topleft=(center[0]-rect[0]/2,center[1]-rect[1]/2)
-        #以center为准，可能和圆心不重合！！
-    x,y=topleft
-    sx+=x
-    sy+=y
     sang=pi/n if lie else 0#start angle
     step=pi*2/n
     points=[]
     for i in range(n):
         ang=i*step+sang
-        points.append((int(sx+sin(ang)*r),int(sy+cos(ang)*r)))#由下方或偏右逆时针编号
+        points.append((sin(ang)*r,cos(ang)*r))#由下方或偏右逆时针编号
     self=commonPoly(points)
-    self.topleft=topleft
-    self.rect=rectangle.Rect(topleft+rect)
-    self.n,self.r,self.size=n,r,size
-    self.center=(sx,sy)
-    #print(sx)
+    self.r,self.size=r,size
+    self.regular=True
+    if center!=None:
+        sx,sy=center
+        self.move(center)
+        self.center=(sx,sy)
+    else:
+        dx=topleft[0]-self.topleft[0]
+        dy=topleft[1]-self.topleft[1]
+        self.move((dx,dy))
+        self.center=(dx,dy)
     return self
    
        
