@@ -16,6 +16,16 @@ class commonPoly:
     def __init__(self,points):
         self.points=points
         self.n=len(points)
+        self.set_data()
+    def set_data(self):
+        xs=[x for x,y in self.points]
+        ys=[y for x,y in self.points]
+        x0=min(xs)
+        x1=max(xs)
+        y0=min(ys)
+        y1=max(ys)
+        self.rect=rectangle.Rect((x0,y0,x1-x0,y1-y0))
+        self.topleft=(x0,y0)
     def collide(self,p):
         if hasattr(self,'rect'):
             if not self.rect.collide(p):
@@ -42,8 +52,8 @@ class commonPoly:
         points=self.points.copy()
         add=lambda p:(p[0]+dx,p[1]+dy)
         polyobj=commonPoly(list(map(add,points)))
-        polyobj.topleft=(self.topleft[0]+dx,self.topleft[1]+dy)
-        polyobj.rect=rectangle.Rect(polyobj.topleft+self.rect.wh)
+        #polyobj.topleft=(self.topleft[0]+dx,self.topleft[1]+dy)
+        #polyobj.rect=rectangle.Rect(polyobj.topleft+self.rect.wh)
         polyobj.n,polyobj.r,polyobj.size=self.n,self.r,self.size
         polyobj.center=(self.center[0]+dx,self.center[1]+dy)
         return polyobj
