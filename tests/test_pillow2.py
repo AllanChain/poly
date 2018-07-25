@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw,ImageFont
 from poly import poly,PolyGroup
 
-a=poly(n=6,r=40,topleft=(0,0),lie=False,start_angle=0.2)
+a=poly(n=6,r=40,topleft=(0,0),lie=False,start_rad=0.2)
 im = Image.new("RGBA",(100,100),(0,0,0))
 font=ImageFont.load_default()
 draw = ImageDraw.Draw(im)
