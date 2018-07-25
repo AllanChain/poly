@@ -66,13 +66,13 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_angle=None)
         r=(size/2)/sin(pi/n)
     else:
         size=r*sin(pi/n)*2
-    if start_angle!=None:
-    sang=pi/n if lie else 0#start angle
+    if start_angle==None:
+        start_angle=pi/n if lie else 0#start angle
     step=pi*2/n
     points=[]
     for i in range(n):
-        #不用range(sang...):sang 很可能是小数
-        ang=i*step+sang
+        #不用range(start_angle...):start_angle 很可能是小数
+        ang=i*step+start_angle
         points.append((sin(ang)*r,cos(ang)*r))#由下方或偏右逆时针编号
     self=commonPoly(points)
     self.r,self.size=r,size
