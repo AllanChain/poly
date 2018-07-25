@@ -80,10 +80,12 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True):
         sx,sy=center
         self.move(center)
         self.center=(sx,sy)
+        self.rect.move(center)
     else:
         dx=topleft[0]-self.topleft[0]
         dy=topleft[1]-self.topleft[1]
         self.move((dx,dy))
+        self.rect.move((dx,dy))
         self.center=(dx,dy)
     return self
    

@@ -31,6 +31,9 @@ class Rect:
         if to_int==True:
             response=list(map(int,response))
         return tuple(response)
+    def move(self,d):
+        self.x0+=d[0]
+        self.y0+=d[1]
     def __str__(self):
         print('here')
         return f'Rect of {self.itopleft} and {self.iwh}'
