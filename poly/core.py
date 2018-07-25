@@ -27,15 +27,14 @@ class commonPoly:
         self.rect=rectangle.Rect((x0,y0,x1-x0,y1-y0))
         self.topleft=(x0,y0)
     def collide(self,p):
-        if hasattr(self,'rect'):
-            if not self.rect.collide(p):
-                return False
+        if not self.rect.collide(p):
+            return False
         x,y=p
         linein=[]
-        flag=1 if self.points[-1][0]<=x else -1
+        flag=self.points[-1][0]<x
         for i in range(-1,self.n-1):
            x0=self.points[i+1][0]
-           flag2=1 if x0<x else -1
+           flag2=x0<x
            if flag!=flag2:
               flag=flag2
               k,b=getline(self.points[i+1],self.points[i])
@@ -44,7 +43,7 @@ class commonPoly:
         linein.sort()
         bools=list(map(lambda y0:y>=y0,linein))
         num=bools.count(True)
-        ans=True if num%2==1 else False
+        ans=num%2==1
         return ans
     def move(self,d):
         dx,dy=d
