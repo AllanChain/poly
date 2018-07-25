@@ -12,7 +12,7 @@ def getline(p1,p2):
     return(k,b)
 
 
-class commonPoly:
+class Polygon:
     def __init__(self,points):
         self.points=points
         self.n=len(points)
@@ -74,7 +74,7 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None):
         #不用range(start_rad...):start_rad 很可能是小数
         ang=i*step+start_rad
         points.append((sin(ang)*r,cos(ang)*r))#由下方或偏右逆时针编号
-    self=commonPoly(points)
+    self=Polygon(points)
     self.r,self.size=r,size
     self.regular=True
     if center!=None:
