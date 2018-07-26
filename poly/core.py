@@ -13,9 +13,10 @@ def getline(p1,p2):
 
 
 class Polygon:
-    def __init__(self,points):
+    def __init__(self,points,regular=False):
         self.points=points
         self.n=len(points)
+        self.regular=regular
         self.set_data()
     def set_data(self):
         xs=[x for x,y in self.points]
@@ -50,9 +51,9 @@ class Polygon:
         add=lambda p:(p[0]+dx,p[1]+dy)
         self.points=list(map(add,self.points))
     def copy_and_move(self,d):
-        polyobj=deepcopy(self)
-        polyobj.move(d)
-        return polyobj
+        poly_obj=deepcopy(self)
+        poly_obj.move(d)
+        return poly_obj
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
 
@@ -74,21 +75,20 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None):
         #不用range(start_rad...):start_rad 很可能是小数
         ang=i*step+start_rad
         points.append((sin(ang)*r,cos(ang)*r))#由下方或偏右逆时针编号
-    self=Polygon(points)
-    self.r,self.size=r,size
-    self.regular=True
+    poly_obj=Polygon(points,True)
+    poly_obj.r,poly_obj.size=r,size
     if center!=None:
         sx,sy=center
-        self.move(center)
-        self.center=(sx,sy)
-        self.rect.move(center)
+        poly_obj.move(center)
+        poly_obj.center=(sx,sy)
+        poly_obj.rect.move(center)
     else:
-        dx=topleft[0]-self.topleft[0]
-        dy=topleft[1]-self.topleft[1]
-        self.move((dx,dy))
-        self.rect.move((dx,dy))
-        self.center=(dx,dy)
-    return self
+        dx=topleft[0]-poly_obj.topleft[0]
+        dy=topleft[1]-poly_obj.topleft[1]
+        poly_obj.move((dx,dy))
+        poly_obj.rect.move((dx,dy))
+        poly_obj.center=(dx,dy)
+    return poly_obj
    
        
 def main():
