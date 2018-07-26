@@ -1,11 +1,17 @@
 # handling tiling hexagons and octagons
 from . import poly,Rect
+from math import sin,cos
+
+
 class PolyError(Exception):
     pass
 class PolyGroup:
     def __init__(self,EVEN,ODD,line,base_poly,SINK=True):
         if EVEN<1 or ODD<1 or line<1:
             raise PolyError('Cannot create such a poly: negtive settings.')
+        self.r_poly=base_poly
+        if base_poly.rotate_rad!=0:
+            base_poly=base_poly.copy_and_rotate(-base_poly.rotate_rad)
         self.n=base_poly.n
         if not self.n in (6,8):
             raise PolyError('Cannot create such a poly: not implemented')
@@ -29,8 +35,8 @@ class PolyGroup:
             down=max(0,f)*self.dly/2+self.dly
         elif self.n==8:
             self.dlx=base_poly.points[0][0]-base_poly.points[5][0]
-            self.dly=base_poly.rect.h+base_poly.size
-            down=max(base_poly.rect.h,f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
+            self.dly=base_poly.size+base_poly.rect.h
+            down=max(base_poly.size.rect.h,f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
         up=min(0,(self.EVEN-self.ODD)/2)*self.dly
         #print(down)
         self.rect=Rect((self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
@@ -38,6 +44,8 @@ class PolyGroup:
                    self.dly*(self.EVEN_T-1)+down-up))
         r,s=divmod(line,2)
         self.total=r*(self.EVEN_T+self.ODD_T)+s*self.EVEN_T
+        self.rotate_sin=sin(base_poly.rotate_rad)
+        self.rotate_cos=cos(base_poly.rotate_rad)
         return
     def __getitem__(self,i):
         coord=self.num_to_coord(i)
@@ -50,14 +58,15 @@ class PolyGroup:
         dx=x*self.dlx
         dy=self.dly*(y+(x%2)*(self.EVEN-self.ODD)/2)
         #return dx,dy
-        return dx*self.base_poly.rotate_cos+dy*self.base_poly.rotate_sin,-dx*self.base_poly.rotate_sin+dy*self.base_poly.rotate_cos
+        return dx*self.rotate_cos+dy*self.rotate_sin,-dx*self.rotate_sin+dy*self.rotate_cos
     def get_pos_by_coord(self,coord):
         sx,sy=self.base_poly.topleft
         dx,dy=self.get_delta_pos_by_coord(coord)
         return sx+dx,sy+dy
     def get_poly_by_coord(self,coord):
         dx,dy=self.get_delta_pos_by_coord(coord)
-        return self.base_poly.copy_and_move((dx,dy))
+        poly_obj=self.base_poly.copy_and_move((dx,dy))
+        return poly_obj
     def is_valid_coord(self,coord):
         x,y=coord
         if x<0 or y<0:
@@ -76,8 +85,8 @@ class PolyGroup:
         cx,cy=self.base_poly.topleft
         sx-=cx
         sy-=cy
-        sx=sx*self.base_poly.rotate_cos-sy*self.base_poly.rotate_sin
-        sy=sy*self.base_poly.rotate_cos+sx*self.base_poly.rotate_sin
+        sx=sx*self.rotate_cos-sy*self.rotate_sin
+        sy=sy*self.rotate_cos+sx*self.rotate_sin
         x=int(sx//self.dlx)
         y=int(sy//self.dly)
         ns=self.get_neiborhood_by_coord((x,y))

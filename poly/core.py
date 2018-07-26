@@ -18,6 +18,7 @@ class Polygon:
         self.n=len(points)
         self.regular=regular
         self.set_data()
+        self.center=self.rect.center
     def set_data(self):
         xs=[x for x,y in self.points]
         ys=[y for x,y in self.points]
@@ -50,9 +51,27 @@ class Polygon:
         dx,dy=d
         add=lambda p:(p[0]+dx,p[1]+dy)
         self.points=list(map(add,self.points))
+        self.topleft=add(self.topleft)
+        self.center=add(self.center)
     def copy_and_move(self,d):
-        poly_obj=deepcopy(self)
+        poly_obj=Polygon(self.points)
+        poly_obj.__dict__=self.__dict__.copy()
         poly_obj.move(d)
+        return poly_obj
+    def rotate(self,rad):
+        sub=lambda p:(p[0]-self.center[0],p[1]-self.center[1])
+        r_sin=sin(rad)
+        r_cos=cos(rad)
+        ro=lambda p:(p[0]*r_cos-p[1]*r_sin,p[0]*r_sin+p[1]*r_cos)
+        points=list(map(sub,self.points))
+        self.points=list(map(ro,points))
+        self.set_data()
+        self
+        return
+    def copy_and_rotate(self,rad):
+        poly_obj=Polygon(self.points)
+        poly_obj.__dict__=self.__dict__.copy()
+        poly_obj.rotate(rad)
         return poly_obj
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
@@ -79,8 +98,6 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None,ro
     poly_obj=Polygon(points,True)
     poly_obj.r,poly_obj.size=r,size
     poly_obj.rotate_rad=start_rad-pi/n
-    poly_obj.rotate_sin=sin(poly_obj.rotate_rad)
-    poly_obj.rotate_cos=cos(poly_obj.rotate_rad)
     if center!=None:
         sx,sy=center
         poly_obj.move(center)

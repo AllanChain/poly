@@ -6,7 +6,7 @@ a=poly(n=6,r=40,topleft=(0,60),lie=True)
 #pd.append(a)
 #pd.append(poly(n=6,r=40,topleft=(0,a.rect[1]),lie=True))
 
-ps=PolyGroup(EVEN=3,ODD=3,line=5,base_poly=a,SINK=True)
+ps=PolyGroup(EVEN=3,ODD=3,line=5,base_poly=a,SINK=True)#,rotate_rad=0.1)
 print(ps.get_neibors_by_num(6))
 im = Image.new("RGBA",(500,500),(0,0,0))
 
