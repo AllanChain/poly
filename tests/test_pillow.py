@@ -1,8 +1,9 @@
 from PIL import Image, ImageDraw,ImageFont
 from poly import poly,PolyGroup
+from math import pi
 
 #pd=[]
-a=poly(n=6,r=40,topleft=(60,60),lie=False)
+a=poly(n=6,r=40,topleft=(60,260),lie=True,rotate_rad=pi/2)
 #pd.append(a)
 #pd.append(poly(n=6,r=40,topleft=(0,a.rect[1]),lie=True))
 
