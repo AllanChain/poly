@@ -57,7 +57,7 @@ class Polygon:
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
 
-def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None):
+def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None,rotate_rad=0):
     assert n<=20,'n is too large'
     assert n>=3,'n is too small'
     assert int(n)==n,'n must be an integer'
@@ -68,7 +68,8 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None):
     else:
         size=r*sin(pi/n)*2
     if start_rad==None:
-        start_rad=pi/n if lie else 0#start angle
+        start_rad=pi/n if lie else 0
+        start_rad+=rotate_rad
     step=pi*2/n
     points=[]
     for i in range(n):
@@ -77,6 +78,7 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None):
         points.append((sin(ang)*r,cos(ang)*r))#由下方或偏右逆时针编号
     poly_obj=Polygon(points,True)
     poly_obj.r,poly_obj.size=r,size
+    poly_obj.rotate_rad=start_rad-pi/n
     if center!=None:
         sx,sy=center
         poly_obj.move(center)
