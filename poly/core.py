@@ -79,6 +79,8 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None,ro
     poly_obj=Polygon(points,True)
     poly_obj.r,poly_obj.size=r,size
     poly_obj.rotate_rad=start_rad-pi/n
+    poly_obj.rotate_sin=sin(poly_obj.rotate_rad)
+    poly_obj.rotate_cos=cos(poly_obj.rotate_rad)
     if center!=None:
         sx,sy=center
         poly_obj.move(center)

@@ -49,7 +49,8 @@ class PolyGroup:
         x,y=coord
         dx=x*self.dlx
         dy=self.dly*(y+(x%2)*(self.EVEN-self.ODD)/2)
-        return dx,dy
+        #return dx,dy
+        return dx*self.base_poly.rotate_cos+dy*self.base_poly.rotate_sin,-dx*self.base_poly.rotate_sin+dy*self.base_poly.rotate_cos
     def get_pos_by_coord(self,coord):
         sx,sy=self.base_poly.topleft
         dx,dy=self.get_delta_pos_by_coord(coord)
@@ -75,6 +76,8 @@ class PolyGroup:
         cx,cy=self.base_poly.topleft
         sx-=cx
         sy-=cy
+        sx=sx*self.base_poly.rotate_cos-sy*self.base_poly.rotate_sin
+        sy=sy*self.base_poly.rotate_cos+sx*self.base_poly.rotate_sin
         x=int(sx//self.dlx)
         y=int(sy//self.dly)
         ns=self.get_neiborhood_by_coord((x,y))
