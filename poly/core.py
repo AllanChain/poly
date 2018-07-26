@@ -62,17 +62,19 @@ class Polygon:
         sub=lambda p:(p[0]-self.center[0],p[1]-self.center[1])
         r_sin=sin(rad)
         r_cos=cos(rad)
-        ro=lambda p:(p[0]*r_cos-p[1]*r_sin,p[0]*r_sin+p[1]*r_cos)
+        ro=lambda p:(p[0]*r_cos+p[1]*r_sin,-p[0]*r_sin+p[1]*r_cos)
         points=list(map(sub,self.points))
         self.points=list(map(ro,points))
         self.set_data()
-        self
         return
     def copy_and_rotate(self,rad):
         poly_obj=Polygon(self.points)
         poly_obj.__dict__=self.__dict__.copy()
         poly_obj.rotate(rad)
         return poly_obj
+    @property
+    def ipoints(self):
+        return [(int(x),int(y)) for x,y in self.points]
     def __str__(self):
         return 'A poly with %d edge and %d r'%(self.n,self.r)
 

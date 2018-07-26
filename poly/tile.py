@@ -12,6 +12,9 @@ class PolyGroup:
         self.r_poly=base_poly
         if base_poly.rotate_rad!=0:
             base_poly=base_poly.copy_and_rotate(-base_poly.rotate_rad)
+            print(base_poly.rect)
+            print(self.r_poly.rect)
+            print(base_poly.ipoints)
         self.n=base_poly.n
         if not self.n in (6,8):
             raise PolyError('Cannot create such a poly: not implemented')
@@ -32,6 +35,7 @@ class PolyGroup:
         if self.n==6:
             self.dlx=base_poly.points[0][0]-base_poly.points[4][0]
             self.dly=base_poly.rect.h
+            print(self.dlx)
             down=max(0,f)*self.dly/2+self.dly
         elif self.n==8:
             self.dlx=base_poly.points[0][0]-base_poly.points[5][0]
@@ -44,8 +48,9 @@ class PolyGroup:
                    self.dly*(self.EVEN_T-1)+down-up))
         r,s=divmod(line,2)
         self.total=r*(self.EVEN_T+self.ODD_T)+s*self.EVEN_T
-        self.rotate_sin=sin(base_poly.rotate_rad)
-        self.rotate_cos=cos(base_poly.rotate_rad)
+        self.rotate_sin=sin(self.r_poly.rotate_rad)
+        print(self.r_poly.rotate_rad)
+        self.rotate_cos=cos(self.r_poly.rotate_rad)
         return
     def __getitem__(self,i):
         coord=self.num_to_coord(i)
@@ -65,7 +70,7 @@ class PolyGroup:
         return sx+dx,sy+dy
     def get_poly_by_coord(self,coord):
         dx,dy=self.get_delta_pos_by_coord(coord)
-        poly_obj=self.base_poly.copy_and_move((dx,dy))
+        poly_obj=self.r_poly.copy_and_move((dx,dy))
         return poly_obj
     def is_valid_coord(self,coord):
         x,y=coord

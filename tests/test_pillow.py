@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw,ImageFont
 from poly import poly,PolyGroup
 
 #pd=[]
-a=poly(n=6,r=40,topleft=(0,60),lie=True)
+a=poly(n=6,r=40,topleft=(60,60),lie=False)
 #pd.append(a)
 #pd.append(poly(n=6,r=40,topleft=(0,a.rect[1]),lie=True))
 
@@ -14,7 +14,7 @@ font=ImageFont.load_default()
 draw = ImageDraw.Draw(im)
 j=0
 for a in ps:
-    print(a.points)
+    #print(a.points)
     draw.polygon(a.points,outline=(0,255,0),fill=(0,0,255))
     k=ps.coord_to_num(ps.num_to_coord(j))
     draw.text(a.center,str(j),font=font)
