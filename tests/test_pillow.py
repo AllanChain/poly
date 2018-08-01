@@ -3,7 +3,7 @@ from poly import poly,PolyGroup
 from math import pi
 
 a=poly(n=6,r=40,topleft=(0,0),lie=True)#,rotate_rad=pi/2)
-X,Y=POINT=((70,70))
+X,Y=POINT=((80,70))
 ps=PolyGroup(EVEN=3,ODD=3,line=5,base_poly=a,SINK=True)#,rotate_rad=0.1)
 print('co@@',ps.collide(POINT))
 print(ps.get_neibors_by_num(6))
