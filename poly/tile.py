@@ -40,7 +40,7 @@ class PolyGroup:
         elif self.n==8:
             self.dlx=base_poly.points[0][0]-base_poly.points[5][0]
             self.dly=base_poly.size+base_poly.rect.h
-            down=max(base_poly.size.rect.h,f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
+            down=max(base_poly.size+base_poly.rect.h,f*(base_poly.points[0][1]-base_poly.points[1][1]+self.dly))
         up=min(0,(self.EVEN-self.ODD)/2)*self.dly
         #print(down)
         self.rect=Rect((self.base_poly.topleft[0],self.base_poly.topleft[1]+up,\
