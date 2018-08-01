@@ -1,8 +1,9 @@
 from PIL import Image, ImageDraw,ImageFont
-from poly import poly,PolyGroup
+from poly import poly,PolyGroup,Polygon
 
-a=poly(n=6,r=40,topleft=(0,0),lie=True)#False,start_rad=0.2)
-X,Y=POINT=30,40
+#a=poly(n=6,r=40,topleft=(0,0),lie=True)#False,start_rad=0.2)
+a=Polygon([(120, 103), (140, 69), (120, 34), (80, 34), (60, 69), (79, 103)])
+X,Y=POINT=80,70
 print(a.collide(POINT))
 im = Image.new("RGBA",(100,100),(0,0,0))
 font=ImageFont.load_default()
