@@ -32,7 +32,6 @@ class Polygon:
         print(self.rect,p)
         if not self.rect.collide(p):
             return False
-        print('Pass rect test')
         x,y=p
         linein=[]
         flag=self.points[-1][0]<x

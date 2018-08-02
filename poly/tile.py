@@ -97,7 +97,6 @@ class PolyGroup:
         ns=self.get_neiborhood_by_coord((x,y))
         for p in ns:
             t_poly=self.get_poly_by_coord(p)
-            print('---'*3)
             if t_poly.collide(pos):
                 return p
     def check_valid_coord(self,coord):
