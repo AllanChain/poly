@@ -108,12 +108,12 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None,ro
         sx,sy=center
         poly_obj.move(center)
         poly_obj.center=(sx,sy)
-        poly_obj.rect.move(center)
+        #poly_obj.rect.move(center)
     else:
         dx=topleft[0]-poly_obj.topleft[0]
         dy=topleft[1]-poly_obj.topleft[1]
         poly_obj.move((dx,dy))
-        poly_obj.rect.move((dx,dy))
+        #poly_obj.rect.move((dx,dy))
         poly_obj.center=(dx,dy)
     return poly_obj
    
