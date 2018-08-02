@@ -35,8 +35,8 @@ class Rect:
         self.x0+=d[0]
         self.y0+=d[1]
     def __str__(self):
-        print('here')
-        return f'Rect of {self.itopleft} and {self.iwh}'
+        #print('here')
+        return f'Rect<Topleft:{self.itopleft} Wh:{self.iwh}>'
 ##    @property
 ##    def xywh(self):
 ##        return self.x0,self.y0,self.w,self.h

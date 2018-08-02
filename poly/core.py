@@ -29,8 +29,10 @@ class Polygon:
         self.rect=rectangle.Rect((x0,y0,x1-x0,y1-y0))
         self.topleft=(x0,y0)
     def collide(self,p):
+        print(self.rect,p)
         if not self.rect.collide(p):
             return False
+        print('Pass rect test')
         x,y=p
         linein=[]
         flag=self.points[-1][0]<x
@@ -51,7 +53,10 @@ class Polygon:
         dx,dy=d
         add=lambda p:(p[0]+dx,p[1]+dy)
         self.points=list(map(add,self.points))
-        self.topleft=add(self.topleft)
+        self.set_data()
+        #Rect object is not copied in this way.
+        #self.rect.move(d)
+        #self.topleft=add(self.topleft)
         self.center=add(self.center)
     def copy_and_move(self,d):
         poly_obj=Polygon(self.points)
