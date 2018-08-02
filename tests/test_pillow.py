@@ -7,7 +7,7 @@ X,Y=POINT=((80,70))
 ps=PolyGroup(EVEN=3,ODD=3,line=5,base_poly=a,SINK=True)#,rotate_rad=0.1)
 print('co@@',ps.collide(POINT))
 print(ps.get_neibors_by_num(6))
-im = Image.new("RGBA",(500,500),(0,0,0))
+im = Image.new("RGBA",(700,700),(0,0,0))
 
 font=ImageFont.load_default()
 draw = ImageDraw.Draw(im)
@@ -16,7 +16,8 @@ for a in ps:
     #print(a.points)
     draw.polygon(a.points,outline=(0,255,0),fill=(0,0,255))
     k=ps.coord_to_num(ps.num_to_coord(j))
-    draw.text(a.center,str(j),font=font)
+    draw.text(a.rect.center,str(j),font=font)
+    draw.rectangle(a.rect.xyxy)
     j+=1
 draw.ellipse((X-5,Y-5,X+5,Y+5),fill=(0,255,0))
 draw.rectangle(ps.rect.ixyxy)
