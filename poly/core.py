@@ -83,6 +83,25 @@ class Polygon:
         return 'A poly with %d edge and %d r'%(self.n,self.r)
 
 def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None,rotate_rad=0):
+    '''function to create a regular polygon
+
+    Parameters
+    ----------
+    n : int
+        The number of edges the polygon has
+    r : int or float, optional
+        The radius of the circumscribed circle
+    size : int or float, optional
+        The length of a side. At least one of `r` and `size` should be specified. Will use r if both are provided
+    topleft : tuple(int,int), optional
+        The topleft point of the outer square of the polygon
+    center : tuple(int,int), optional
+        The center of the outer square of the polygon
+    Returns
+    -------
+    poly_obj : Polygon
+        The Polygon object you required
+    '''
     assert n<=20,'n is too large'
     assert n>=3,'n is too small'
     assert int(n)==n,'n must be an integer'
