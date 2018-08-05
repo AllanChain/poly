@@ -93,10 +93,17 @@ def poly(n,r=None,size=None,topleft=(0,0),center=None,lie=True,start_rad=None,ro
         The radius of the circumscribed circle
     size : int or float, optional
         The length of a side. At least one of `r` and `size` should be specified. Will use r if both are provided
-    topleft : tuple(int,int), optional
+    topleft : tuple(int,int), optional, default (0,0)
         The topleft point of the outer square of the polygon
     center : tuple(int,int), optional
-        The center of the outer square of the polygon
+        The center of the outer square of the polygon. If both topleft and center are provided, only uses center.
+    lie : bool, optional, default True
+        whether the polygon lies
+    start_rad : int or float, optional
+        Strongly specify the angle in rad where the first point starts. Ignore lie if provided
+    rotate_rad : int or float, optional
+        Weakly specify the angle in rad where the first point starts. Add it on lie if provided
+
     Returns
     -------
     poly_obj : Polygon
